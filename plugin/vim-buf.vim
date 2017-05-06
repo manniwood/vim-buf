@@ -53,29 +53,29 @@ function RenderBufferBuffer()
   " buffer, but the *previous* current buffer).
   execute "normal! " . l:cur_line . "G"
   " For this buffer only, make <Enter> call GoToBuffer()
-  :nnoremap <buffer> <CR> :call GoToBuffer()<CR>
+  nnoremap <buffer> <CR> :call GoToBuffer()<CR>
 
   " For this buffer only, deny the ability to accidentally make edits
-  :nnoremap <buffer> a <Nop>
-  :nnoremap <buffer> A <Nop>
-  :nnoremap <buffer> c <Nop>
-  :nnoremap <buffer> C <Nop>
-  :nnoremap <buffer> d <Nop>
-  :nnoremap <buffer> D <Nop>
-  :nnoremap <buffer> i <Nop>
-  :nnoremap <buffer> I <Nop>
-  :nnoremap <buffer> J <Nop>
-  :nnoremap <buffer> o <Nop>
-  :nnoremap <buffer> O <Nop>
-  :nnoremap <buffer> q <Nop>
-  :nnoremap <buffer> r <Nop>
-  :nnoremap <buffer> R <Nop>
-  :nnoremap <buffer> s <Nop>
-  :nnoremap <buffer> S <Nop>
-  :nnoremap <buffer> p <Nop>
-  :nnoremap <buffer> P <Nop>
-  :nnoremap <buffer> x <Nop>
-  :nnoremap <buffer> X <Nop>
+  nnoremap <buffer> a <Nop>
+  nnoremap <buffer> A <Nop>
+  nnoremap <buffer> c <Nop>
+  nnoremap <buffer> C <Nop>
+  nnoremap <buffer> d <Nop>
+  nnoremap <buffer> D <Nop>
+  nnoremap <buffer> i <Nop>
+  nnoremap <buffer> I <Nop>
+  nnoremap <buffer> J <Nop>
+  nnoremap <buffer> o <Nop>
+  nnoremap <buffer> O <Nop>
+  nnoremap <buffer> q <Nop>
+  nnoremap <buffer> r <Nop>
+  nnoremap <buffer> R <Nop>
+  nnoremap <buffer> s <Nop>
+  nnoremap <buffer> S <Nop>
+  nnoremap <buffer> p <Nop>
+  nnoremap <buffer> P <Nop>
+  nnoremap <buffer> x <Nop>
+  nnoremap <buffer> X <Nop>
 endfunction
 
 " Only makes sense if RenderBufferBuffer(), above, has been run,
@@ -89,7 +89,7 @@ function GoToBuffer()
   " split out the buffer number from the start of the line
   let l:bufnum = split(l:line)[0]
   " Go to the buffer number
-  :execute "buffer " . l:bufnum
+  execute "buffer " . l:bufnum
 endfunction
 
 " Make :Buf call our buffer switcher
