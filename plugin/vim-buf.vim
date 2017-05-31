@@ -1,3 +1,13 @@
+" Return a count of the number of listed buffers
+function CountListedBuffers()
+  let l:ct = 0
+  for l:val in copy(getbufinfo())
+    if l:val.listed
+      let l:ct += 1
+    endif
+  endfor
+  return l:ct
+endfunction
 
 " Compare two bufinfo maps based on their names. Can be used by sort().
 " We use this in RenderBufferBuffer sort bufinfo maps by the name of the buffer.
@@ -6,22 +16,28 @@ function CompareBufInfos(b1, b2)
 endfunction
 
 function RenderBufferBuffer()
-  " before opening the __buffers__ buffer, get the number of our current
+  " If we only have one listed buffer, go no further.
+  if CountListedBuffers() < 2
+    echo "No other buffers"
+    return
+  endif
+
+  " Before opening the __buffers__ buffer, get the number of our current
   " buffer, so that we can hilight its line once we are in __buffers__
   let l:current_bufnum = bufnr('%')
-  " make a new (or use the existing) full-window buffer with the name __buffers__
+  " Make a new (or use the existing) full-window buffer with the name __buffers__
   edit __buffers__
-  " clear the buffer of all content
+  " Clear the buffer of all content
   normal! 1GdG
-  " be sure the buffer is a scratch buffer that doesn't actually save to a
+  " Be sure the buffer is a scratch buffer that doesn't actually save to a
   " file
   setlocal buftype=nofile
   " Remove this buffer from the buffer list, because we don't want to switch
   " to it.
   setlocal nobuflisted
-  " highlight the line the cursor is on
+  " Highlight the line the cursor is on
   setlocal cursorline
-  " how to iterate over buffers in vimscript:
+  " How to iterate over buffers in vimscript:
   " http://vi.stackexchange.com/questions/10477/how-to-iterate-over-buffers-in-vimscript
   " Create a list of lines with the buffer number, a tab, and the buffer name.
   " let l:buffer_names = map(copy(getbufinfo()), 'l:val.bufnr . "\t" . v:val.name')
@@ -45,9 +61,9 @@ function RenderBufferBuffer()
       let l:line_num += 1
     endif
   endfor
-  " put the list of buffers in the buffer
+  " Put the list of buffers in the buffer
   call append(0, l:buffer_names)
-  " for some reason, there is a final empty blank line; nuke it
+  " For some reason, there is a final empty blank line; nuke it
   normal! Gdd
   " Place cursor on the current buffer (OK, we know __buffers__ is the current
   " buffer, but the *previous* current buffer).
@@ -82,11 +98,11 @@ endfunction
 " because it requires the cursor to be positioned on a line of text
 " that has a buffer number, a tab, and a buffer name.
 function GoToBuffer()
-  " get the contents of the line under the cursor
+  " Get the contents of the line under the cursor
   " (the user presumably positioned the cursor on a line with a buffer
   " number and name inside the __buffers__ buffer)
   let l:line = getline('.')
-  " split out the buffer number from the start of the line
+  " Split out the buffer number from the start of the line
   let l:bufnum = split(l:line)[0]
   " Go to the buffer number
   execute "buffer " . l:bufnum
